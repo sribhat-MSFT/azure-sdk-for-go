@@ -35,10 +35,14 @@ func PossiblePropertySemanticsValues() []PropertySemantics {
 type ListFilesIncludeType = generated.ListFilesIncludeType
 
 const (
-	ListFilesIncludeTypeTimestamps    ListFilesIncludeType = generated.ListFilesIncludeTypeTimestamps
-	ListFilesIncludeTypeETag          ListFilesIncludeType = generated.ListFilesIncludeTypeEtag
+	ListFilesIncludeTypeAll           ListFilesIncludeType = generated.ListFilesIncludeTypeAll
 	ListFilesIncludeTypeAttributes    ListFilesIncludeType = generated.ListFilesIncludeTypeAttributes
+	ListFilesIncludeTypeETag          ListFilesIncludeType = generated.ListFilesIncludeTypeEtag
+	ListFilesIncludeTypeLinkCount     ListFilesIncludeType = generated.ListFilesIncludeTypeLinkCount
+	ListFilesIncludeTypeNfsAttributes ListFilesIncludeType = generated.ListFilesIncludeTypeNfsAttributes
+	ListFilesIncludeTypePermissions   ListFilesIncludeType = generated.ListFilesIncludeTypePermissions
 	ListFilesIncludeTypePermissionKey ListFilesIncludeType = generated.ListFilesIncludeTypePermissionKey
+	ListFilesIncludeTypeTimestamps    ListFilesIncludeType = generated.ListFilesIncludeTypeTimestamps
 )
 
 // PossibleListFilesIncludeTypeValues returns the possible values for the ListFilesIncludeType const type.

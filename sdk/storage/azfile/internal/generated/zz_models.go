@@ -21,6 +21,27 @@ type AccessPolicy struct {
 	Start *time.Time `xml:"Start"`
 }
 
+// BlockDevice - A listed block device item.
+type BlockDevice struct {
+	// REQUIRED; The block device name.
+	Name *string `xml:"Name"`
+
+	// REQUIRED; File properties.
+	Properties *FileProperty `xml:"Properties"`
+
+	// NFS only. The major device number of the block device.
+	DeviceMajor *int64 `xml:"DeviceMajor"`
+
+	// NFS only. The minor device number of the block device.
+	DeviceMinor *int64 `xml:"DeviceMinor"`
+
+	// The file ID.
+	ID *string `xml:"FileId"`
+
+	// NFS only. The link count of the block device.
+	LinkCount *int64 `xml:"LinkCount"`
+}
+
 // CORSRule - CORS is an HTTP feature that enables a web application running under one domain
 // to access resources in another domain. Web browsers implement a security
 // restriction known as same-origin policy that prevents a web page from calling
@@ -50,6 +71,27 @@ type CORSRule struct {
 	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
 }
 
+// CharDevice - A listed character device item.
+type CharDevice struct {
+	// REQUIRED; The character device name.
+	Name *string `xml:"Name"`
+
+	// REQUIRED; File properties.
+	Properties *FileProperty `xml:"Properties"`
+
+	// NFS only. The major device number of the character device.
+	DeviceMajor *int64 `xml:"DeviceMajor"`
+
+	// NFS only. The minor device number of the character device.
+	DeviceMinor *int64 `xml:"DeviceMinor"`
+
+	// The file ID.
+	ID *string `xml:"FileId"`
+
+	// NFS only. The link count of the character device.
+	LinkCount *int64 `xml:"LinkCount"`
+}
+
 // ClearRange - A clear range.
 type ClearRange struct {
 	// REQUIRED; End of the range.
@@ -70,11 +112,29 @@ type Directory struct {
 	// The file ID.
 	ID *string `xml:"FileId"`
 
+	// NFS only. The link count of the directory.
+	LinkCount *int64 `xml:"LinkCount"`
+
 	// The permission key.
 	PermissionKey *string `xml:"PermissionKey"`
 
 	// File properties.
 	Properties *FileProperty `xml:"Properties"`
+}
+
+// Fifo - A listed FIFO item.
+type Fifo struct {
+	// REQUIRED; The FIFO name.
+	Name *string `xml:"Name"`
+
+	// REQUIRED; File properties.
+	Properties *FileProperty `xml:"Properties"`
+
+	// The file ID.
+	ID *string `xml:"FileId"`
+
+	// NFS only. The link count of the FIFO.
+	LinkCount *int64 `xml:"LinkCount"`
 }
 
 // File - A listed file item.
@@ -88,8 +148,14 @@ type File struct {
 	// The file attributes.
 	Attributes *string `xml:"Attributes"`
 
+	// NFS only. The type of the file.
+	FileType *NFSFileType `xml:"FileType"`
+
 	// The file ID.
 	ID *string `xml:"FileId"`
+
+	// NFS only. The link count of the file.
+	LinkCount *int64 `xml:"LinkCount"`
 
 	// The permission key.
 	PermissionKey *string `xml:"PermissionKey"`
@@ -112,6 +178,12 @@ type FileProperty struct {
 	// The ETag of the file.
 	ETag *azcore.ETag `xml:"Etag"`
 
+	// NFS only. The file mode of the file.
+	FileMode *string `xml:"Mode"`
+
+	// NFS only. The owner group identifier (GID) of the file.
+	Group *string `xml:"Gid"`
+
 	// The last access time.
 	LastAccessTime *time.Time `xml:"LastAccessTime"`
 
@@ -120,6 +192,9 @@ type FileProperty struct {
 
 	// The last write time.
 	LastWriteTime *time.Time `xml:"LastWriteTime"`
+
+	// NFS only. The owner user identifier (UID) of the file.
+	Owner *string `xml:"Uid"`
 }
 
 // FileRange - An Azure Storage file range.
@@ -138,6 +213,21 @@ type FilesAndDirectoriesListSegment struct {
 
 	// REQUIRED; The file items.
 	Files []*File `xml:"File"`
+
+	// The block device items.
+	BlockDevices []*BlockDevice `xml:"BlockDevice"`
+
+	// The character device items.
+	CharDevices []*CharDevice `xml:"CharDevice"`
+
+	// The FIFO items.
+	Fifos []*Fifo `xml:"Fifo"`
+
+	// The socket items.
+	Sockets []*Socket `xml:"Socket"`
+
+	// The symbolic link items.
+	SymLinks []*SymLink `xml:"SymLink"`
 }
 
 // Handle - A listed Azure Storage handle item.
@@ -474,6 +564,21 @@ type SignedIdentifier struct {
 	AccessPolicy *AccessPolicy `xml:"AccessPolicy"`
 }
 
+// Socket - A listed socket item.
+type Socket struct {
+	// REQUIRED; The socket name.
+	Name *string `xml:"Name"`
+
+	// REQUIRED; File properties.
+	Properties *FileProperty `xml:"Properties"`
+
+	// The file ID.
+	ID *string `xml:"FileId"`
+
+	// NFS only. The link count of the socket.
+	LinkCount *int64 `xml:"LinkCount"`
+}
+
 // StorageServiceProperties - Storage service properties.
 type StorageServiceProperties struct {
 	// The set of CORS rules.
@@ -487,6 +592,24 @@ type StorageServiceProperties struct {
 
 	// Protocol settings
 	Protocol *ProtocolSettings `xml:"ProtocolSettings"`
+}
+
+// SymLink - A listed symbolic link item.
+type SymLink struct {
+	// REQUIRED; The symbolic link name.
+	Name *string `xml:"Name"`
+
+	// REQUIRED; File properties.
+	Properties *FileProperty `xml:"Properties"`
+
+	// The file ID.
+	ID *string `xml:"FileId"`
+
+	// NFS only. The link count of the symbolic link.
+	LinkCount *int64 `xml:"LinkCount"`
+
+	// NFS only. The path to the original file, the symbolic link is pointing to.
+	LinkText *string `xml:"LinkText"`
 }
 
 // UserDelegationKey - A user delegation key

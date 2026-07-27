@@ -5,7 +5,7 @@
 package generated
 
 const (
-	version20261006 string = "2026-10-06"
+	version20261206 string = "2026-12-06"
 )
 
 // AccessRight - Access rights of the access policy.
@@ -228,12 +228,20 @@ func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 type ListFilesIncludeType string
 
 const (
+	// ListFilesIncludeTypeAll - All
+	ListFilesIncludeTypeAll ListFilesIncludeType = "All"
 	// ListFilesIncludeTypeAttributes - Attributes
 	ListFilesIncludeTypeAttributes ListFilesIncludeType = "Attributes"
 	// ListFilesIncludeTypeEtag - Etag
 	ListFilesIncludeTypeEtag ListFilesIncludeType = "Etag"
+	// ListFilesIncludeTypeLinkCount - LinkCount
+	ListFilesIncludeTypeLinkCount ListFilesIncludeType = "LinkCount"
+	// ListFilesIncludeTypeNfsAttributes - NfsAttributes
+	ListFilesIncludeTypeNfsAttributes ListFilesIncludeType = "NfsAttributes"
 	// ListFilesIncludeTypePermissionKey - PermissionKey
 	ListFilesIncludeTypePermissionKey ListFilesIncludeType = "PermissionKey"
+	// ListFilesIncludeTypePermissions - Permissions
+	ListFilesIncludeTypePermissions ListFilesIncludeType = "Permissions"
 	// ListFilesIncludeTypeTimestamps - Timestamps
 	ListFilesIncludeTypeTimestamps ListFilesIncludeType = "Timestamps"
 )
@@ -241,9 +249,13 @@ const (
 // PossibleListFilesIncludeTypeValues returns the possible values for the ListFilesIncludeType const type.
 func PossibleListFilesIncludeTypeValues() []ListFilesIncludeType {
 	return []ListFilesIncludeType{
+		ListFilesIncludeTypeAll,
 		ListFilesIncludeTypeAttributes,
 		ListFilesIncludeTypeEtag,
+		ListFilesIncludeTypeLinkCount,
+		ListFilesIncludeTypeNfsAttributes,
 		ListFilesIncludeTypePermissionKey,
+		ListFilesIncludeTypePermissions,
 		ListFilesIncludeTypeTimestamps,
 	}
 }
@@ -291,10 +303,18 @@ func PossibleModeCopyModeValues() []ModeCopyMode {
 type NFSFileType string
 
 const (
+	// NFSFileTypeBlockDevice - BlockDevice
+	NFSFileTypeBlockDevice NFSFileType = "BlockDevice"
+	// NFSFileTypeCharacterDevice - CharacterDevice
+	NFSFileTypeCharacterDevice NFSFileType = "CharacterDevice"
 	// NFSFileTypeDirectory - Directory
 	NFSFileTypeDirectory NFSFileType = "Directory"
+	// NFSFileTypeFifo - Fifo
+	NFSFileTypeFifo NFSFileType = "Fifo"
 	// NFSFileTypeRegular - Regular
 	NFSFileTypeRegular NFSFileType = "Regular"
+	// NFSFileTypeSocket - Socket
+	NFSFileTypeSocket NFSFileType = "Socket"
 	// NFSFileTypeSymLink - SymLink
 	NFSFileTypeSymLink NFSFileType = "SymLink"
 )
@@ -302,8 +322,12 @@ const (
 // PossibleNFSFileTypeValues returns the possible values for the NFSFileType const type.
 func PossibleNFSFileTypeValues() []NFSFileType {
 	return []NFSFileType{
+		NFSFileTypeBlockDevice,
+		NFSFileTypeCharacterDevice,
 		NFSFileTypeDirectory,
+		NFSFileTypeFifo,
 		NFSFileTypeRegular,
+		NFSFileTypeSocket,
 		NFSFileTypeSymLink,
 	}
 }
