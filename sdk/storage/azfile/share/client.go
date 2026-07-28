@@ -294,7 +294,12 @@ func (s *Client) GetSASURL(permissions sas.SharePermissions, expiry time.Time, o
 		return "", err
 	}
 
-	endpoint := s.URL() + "?" + qps.Encode()
-
-	return endpoint, nil
+	// Append SAS parameters to the original URL, preserving any
+	// percent-encoding. Use "&" when the URL already contains a
+	// query string (e.g. ?sharesnapshot=...).
+	sep := "?"
+	if strings.Contains(s.URL(), "?") {
+		sep = "&"
+	}
+	return s.URL() + sep + qps.Encode(), nil
 }

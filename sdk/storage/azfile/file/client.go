@@ -399,21 +399,73 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 		return "", err
 	}
 
+	// Parse snapshot time from the URL (if present) so it is included
+	// in the SAS signature.
+	var snapshotTime time.Time
+	if urlParts.ShareSnapshot != "" {
+		snapshotTime, _ = time.Parse(sas.SnapshotTimeFormat, urlParts.ShareSnapshot)
+	}
+
 	qps, err := sas.SignatureValues{
-		Version:     sas.Version,
-		ShareName:   urlParts.ShareName,
-		FilePath:    urlParts.DirectoryOrFilePath,
-		Permissions: permissions.String(),
-		StartTime:   st,
-		ExpiryTime:  expiry.UTC(),
+		Version:      sas.Version,
+		ShareName:    urlParts.ShareName,
+		FilePath:     urlParts.DirectoryOrFilePath,
+		SnapshotTime: snapshotTime,
+		Permissions:  permissions.String(),
+		StartTime:    st,
+		ExpiryTime:   expiry.UTC(),
 	}.SignWithSharedKey(f.sharedKey())
 	if err != nil {
 		return "", err
 	}
 
-	endpoint := f.URL() + "?" + qps.Encode()
+	// Append SAS parameters to the original URL, preserving any
+	// percent-encoding (e.g. %2F). Use "&" when the URL already
+	// contains a query string (e.g. ?sharesnapshot=...).
+	sep := "?"
+	if strings.Contains(f.URL(), "?") {
+		sep = "&"
+	}
+	return f.URL() + sep + qps.Encode(), nil
+}
 
-	return endpoint, nil
+// GetUserDelegationSASURL creates a URL with a user-delegation SAS token
+// based on the supplied credential, permissions, and expiry time.
+// This correctly handles share snapshot URLs and preserves percent-encoding.
+func (f *Client) GetUserDelegationSASURL(udkCred *sas.UserDelegationCredential, permissions sas.FilePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+	if udkCred == nil {
+		return "", errors.New("user delegation credential must not be nil")
+	}
+	st := o.format()
+
+	urlParts, err := ParseURL(f.URL())
+	if err != nil {
+		return "", err
+	}
+
+	var snapshotTime time.Time
+	if urlParts.ShareSnapshot != "" {
+		snapshotTime, _ = time.Parse(sas.SnapshotTimeFormat, urlParts.ShareSnapshot)
+	}
+
+	qps, err := sas.SignatureValues{
+		Version:      sas.Version,
+		ShareName:    urlParts.ShareName,
+		FilePath:     urlParts.DirectoryOrFilePath,
+		SnapshotTime: snapshotTime,
+		Permissions:  permissions.String(),
+		StartTime:    st,
+		ExpiryTime:   expiry.UTC(),
+	}.SignWithUserDelegation(udkCred)
+	if err != nil {
+		return "", err
+	}
+
+	sep := "?"
+	if strings.Contains(f.URL(), "?") {
+		sep = "&"
+	}
+	return f.URL() + sep + qps.Encode(), nil
 }
 
 // Concurrent Upload Functions -----------------------------------------------------------------------------------------
